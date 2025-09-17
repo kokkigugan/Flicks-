@@ -1,0 +1,29 @@
+<div class="container">
+  <h2>Movie Payment</h2>
+
+  <!-- Step 1: Get Rental -->
+  <div>
+    <label>Rental ID:</label>
+    <input type="number" [(ngModel)]="rentalId" />
+    <button (click)="fetchRental()">Get Rental</button>
+  </div>
+
+  <div *ngIf="rental">
+    <h3>Rental Details</h3>
+    <p>Movie: {{ rental.movieTitle }}</p>
+    <p>Rental Date: {{ rental.rentalDate | date }}</p>
+    <p>Return Date: {{ rental.returnDate | date }}</p>
+    <p>BluRay Cost: {{ rental.movieBluRayCost | currency }}</p>
+
+    <!-- Step 2: Add Payment -->
+    <button (click)="pay()">Pay</button>
+  </div>
+
+  <div *ngIf="payment">
+    <h3>Payment Receipt</h3>
+    <p>Base Amount: {{ payment.baseAmount | currency }}</p>
+    <p>GST (18%): {{ payment.gstAmount | currency }}</p>
+    <p>Total: {{ payment.totalAmount | currency }}</p>
+    <p>Paid On: {{ payment.paidOn | date:'short' }}</p>
+  </div>
+</div>
