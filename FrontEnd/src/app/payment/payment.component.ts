@@ -7,9 +7,17 @@ import { PaymentService } from '../services/payment.service';
   styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent {
+paymentSuccess: any;
+closeModal() {
+throw new Error('Method not implemented.');
+}
+makePayment() {
+throw new Error('Method not implemented.');
+}
   rentalId!: number;
   rental: any;
   payment: any;
+loading: any;
 
   constructor(private paymentService: PaymentService) {}
 
@@ -26,7 +34,10 @@ export class PaymentComponent {
     const paymentInput = { rentalID: this.rental.rentalID };
 
     this.paymentService.addPayment(paymentInput).subscribe({
-      next: (data) => this.payment = data,
+      next: (data) => {
+        this.payment = data;
+        alert('Thanks for shopping!');
+      },
       error: (err) => alert(err.error.message || 'Payment failed')
     });
   }

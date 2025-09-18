@@ -1,29 +1,49 @@
 <div class="container">
-  <h2>Movie Payment</h2>
-
-  <!-- Step 1: Get Rental -->
-  <div>
-    <label>Rental ID:</label>
-    <input type="number" [(ngModel)]="rentalId" />
-    <button (click)="fetchRental()">Get Rental</button>
+  <div class="invoice-header">
+    <h2>Movie Payment Invoice</h2>
+    <p>Movie: <strong>{{ rental?.movieTitle }}</strong></p>
+    <p>Rental Date: <strong>{{ rental?.rentalDate | date }}</strong></p>
+    <p>Return Date: <strong>{{ rental?.returnDate | date }}</strong></p>
   </div>
-
-  <div *ngIf="rental">
-    <h3>Rental Details</h3>
-    <p>Movie: {{ rental.movieTitle }}</p>
-    <p>Rental Date: {{ rental.rentalDate | date }}</p>
-    <p>Return Date: {{ rental.returnDate | date }}</p>
-    <p>BluRay Cost: {{ rental.movieBluRayCost | currency }}</p>
-
-    <!-- Step 2: Add Payment -->
-    <button (click)="pay()">Pay</button>
+  <div class="step">
+    <h3>Enter Rental ID</h3>
+    <form (ngSubmit)="fetchRental()">
+      <div class="form-group">
+        <label for="rentalId">Rental ID:</label>
+        <input type="number" id="rentalId" [(ngModel)]="rentalId" name="rentalId" required />
+      </div>
+      <button type="submit" [disabled]="loading" class="btn btn-primary">
+        Get Rental
+        <span *ngIf="loading" class="loading-spinner"></span>
+      </button>
+    </form>
   </div>
-
-  <div *ngIf="payment">
-    <h3>Payment Receipt</h3>
-    <p>Base Amount: {{ payment.baseAmount | currency }}</p>
-    <p>GST (18%): {{ payment.gstAmount | currency }}</p>
-    <p>Total: {{ payment.totalAmount | currency }}</p>
-    <p>Paid On: {{ payment.paidOn | date:'short' }}</p>
+  <div *ngIf="rental" class="popup-overlay">
+    <div class="popup-modal">
+      <button class="close-btn" (click)="rental = null" aria-label="Close">&times;</button>
+      <h3> Rental Details</h3>
+      <div class="details">
+        <p><strong>Movie Title:</strong> {{ rental.movieTitle }}</p>
+        <p><strong>BluRay Cost:</strong> {{ rental.movieBluRayCost | currency }}</p>
+        <p><strong>Rental Date:</strong> {{ rental.rentalDate | date }}</p>
+        <p><strong>Return Date:</strong> {{ rental.returnDate | date }}</p>
+      </div>
+      <button (click)="pay()" [disabled]="loading" class="btn btn-success">
+        Pay Now
+        <span *ngIf="loading" class="loading-spinner"></span>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="payment" class="popup-overlay">
+    <div class="popup-modal">
+      <button class="close-btn" (click)="payment = null" aria-label="Close">&times;</button>
+      <h3> Payment Receipt</h3>
+      <div class="details">
+        <p><strong>Base Amount:</strong> {{ payment.baseAmount | currency }}</p>
+        <p><strong>GST (18%):</strong> {{ payment.gstAmount | currency }}</p>
+        <p><strong>Total Amount:</strong> {{ payment.totalAmount | currency }}</p>
+        <p><strong>Paid On:</strong> {{ payment.paidOn | date:'short' }}</p>
+      </div>
+    </div>
   </div>
 </div>
